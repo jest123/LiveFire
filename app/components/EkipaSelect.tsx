@@ -60,10 +60,10 @@ export default function EkipaSelect({ onChange, defaultValue }: EkipaSelectProps
   if (error) return <p style={{ color: 'red' }}>Napaka: {error}</p>;
 
   return (
-    <select value={selected} onChange={handleChange} className="border p-2 rounded">
+    <select value={selected} onChange={handleChange} className="border p-2 rounded" name='team' id='team'>
       <option value="">— Izberi ekipo —</option>
       {ekipe.map((e) => (
-        <option key={e.EID ?? e.StartnaSt} value={String(e.StartnaSt)} data-ime={e.ImeEkipe}>
+        <option key={e.EID} value={String(e.EID)} data-ime={e.ImeEkipe}>
            {e.StartnaSt} - {e.ImeEkipe}
         </option>
       ))}

@@ -5,7 +5,43 @@ import mysql from  'mysql2/promise';
 import { NextResponse, NextRequest } from 'next/server'
 import { get } from "http";
 import EkipaSelect, {Ekipa} from "./components/EkipaSelect";
+import { toast } from "sonner";
 
+async function handleSubmit() {
+  'use client';
+
+  const data={
+    EID: (document.getElementById('team') as HTMLInputElement).value,
+    Cas: (document.getElementById('score') as HTMLInputElement).value,
+    KazenskeTocke: (document.getElementById('penalty') as HTMLInputElement).value,
+  }
+
+  const response = await fetch('/api/ekipa', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+  if(response.ok){
+     toast.success("Rezultat dodan!", {
+        style: {
+          backgroundColor: "green", // zelena barva
+          color: "white"             // bela pisava
+        }
+      });
+     console.log("Rezultat dodan"); 
+  } else {
+     toast.error("Napaka pri dodajanju rezultata", {
+       style: {
+         backgroundColor: "red",   // rdeča barva
+         color: "white"             // bela pisava
+       }
+     });
+  }
+}
 
 export default function InputDialog() {
   return (
@@ -43,6 +79,10 @@ export default function InputDialog() {
       <button
         type="submit"
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        onClick={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
       >
         Pošlji
       </button>

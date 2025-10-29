@@ -29,3 +29,15 @@ export async function GET() {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
+export async function POST(request) {
+  try {
+    const { EID, VID, Cas, KazenskeTocke} = await request.json();
+    const p = await getPool();
+    const [result] = await p.query('INSERT INTO Rezultat (EID, VID, Cas, KazenskeTocke, Potrjen, DatumCasVpisa) VALUES (?, 1, ?, ?, 0, ?)', [EID, Cas, KazenskeTocke, new Date()]);
+    return NextResponse.json({ success: true, insertId: result.insertId });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
